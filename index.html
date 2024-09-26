@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-In-One Social Media Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" 
+            src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+    <div class="container">
+        <header>
+            <h1>Social Media Manager</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="schedule.html">Schedule Posts</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="post-creation">
+                <h2>Create Post</h2>
+                <form id="post-form">
+                    <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+                    <button type="button" id="publish-btn">Publish Now</button>
+                    <button type="button" id="schedule-btn">Schedule Post</button>
+                </form>
+            </section>
+
+            <section id="social-accounts">
+                <h2>Linked Accounts</h2>
+                <div id="accounts">
+                    <button class="connect-btn" id="connect-facebook">Connect Facebook</button>
+                    <button class="connect-btn" id="connect-instagram">Connect Instagram</button>
+                    <button class="connect-btn" id="connect-linkedin">Connect LinkedIn</button>
+                </div>
+                <div id="connected-accounts">
+                    <!-- Placeholder for displaying connected accounts -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
