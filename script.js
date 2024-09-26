@@ -1,16 +1,32 @@
+    // app id : 399515593191802secrt :: 30ed2411cd9de4298ca77b6422f54b4a
+
+
+
 // Global flag to check if Facebook SDK is ready
 let fbSdkReady = false;
+
+// Function to check if Facebook SDK is loaded
+function checkFacebookSDKInitialization() {
+    if (typeof FB !== 'undefined') {
+        fbSdkReady = true;
+        console.log("Facebook SDK is now initialized.");
+    } else {
+        console.log("Facebook SDK is not yet initialized. Retrying...");
+        setTimeout(checkFacebookSDKInitialization, 100); // Retry every 100ms until SDK is loaded
+    }
+}
 
 // Facebook SDK initialization
 window.fbAsyncInit = function() {
     FB.init({
-        appId      : '399515593191802secrt', // Replace with your App ID
+        appId      : '399515593191802', // Replace with your App ID
         cookie     : true,               // Enable cookies to allow the server to access the session
         xfbml      : true,               // Parse social plugins on this page
         version    : 'v17.0'             // Use the latest Graph API version
     });
-    // app id : 399515593191802secrt :: 30ed2411cd9de4298ca77b6422f54b4a
+
     fbSdkReady = true; // Set the flag to true when SDK is initialized
+    console.log("Facebook SDK initialized in fbAsyncInit.");
 
     // Check the current login status
     FB.getLoginStatus(function(response) {
@@ -26,6 +42,9 @@ window.fbAsyncInit = function() {
     js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
+
+// Start checking if the SDK is initialized
+checkFacebookSDKInitialization();
 
 // Callback function to handle login status changes
 function statusChangeCallback(response) {
