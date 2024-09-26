@@ -1,3 +1,6 @@
+// Global flag to check if Facebook SDK is ready
+let fbSdkReady = false;
+
 // Facebook SDK initialization
 window.fbAsyncInit = function() {
     FB.init({
@@ -6,8 +9,8 @@ window.fbAsyncInit = function() {
         xfbml      : true,               // Parse social plugins on this page
         version    : 'v17.0'             // Use the latest Graph API version
     });
-
     // app id : 399515593191802secrt :: 30ed2411cd9de4298ca77b6422f54b4a
+    fbSdkReady = true; // Set the flag to true when SDK is initialized
 
     // Check the current login status
     FB.getLoginStatus(function(response) {
@@ -45,13 +48,17 @@ function statusChangeCallback(response) {
 
 // Function to handle Facebook login
 function fbLogin() {
-    FB.login(function(response) {
-        if (response.authResponse) {
-            statusChangeCallback(response);
-        } else {
-            console.log('User cancelled login or did not fully authorize.');
-        }
-    }, {scope: 'email,public_profile,pages_manage_posts'}); // Request additional permissions as needed
+    if (fbSdkReady) { // Check if SDK is initialized before calling login
+        FB.login(function(response) {
+            if (response.authResponse) {
+                statusChangeCallback(response);
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {scope: 'email,public_profile,pages_manage_posts'}); // Request additional permissions as needed
+    } else {
+        console.log("Facebook SDK is not initialized yet. Please wait.");
+    }
 }
 
 // Function to display connected accounts
@@ -92,31 +99,33 @@ function postToFacebook(message) {
     }
 }
 
-// Event listeners for Facebook connect button
-document.getElementById('connect-facebook').addEventListener('click', fbLogin);
+// Add event listener for the Facebook connect button only when the document is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('connect-facebook').addEventListener('click', fbLogin);
 
-// Event listeners for post actions
-document.getElementById('publish-btn').addEventListener('click', function() {
-    const postContent = document.getElementById('post-content').value;
-    if (!postContent) {
-        alert("Please enter some content to publish!");
-        return;
-    }
-    postToFacebook(postContent);
+    // Event listeners for post actions
+    document.getElementById('publish-btn').addEventListener('click', function() {
+        const postContent = document.getElementById('post-content').value;
+        if (!postContent) {
+            alert("Please enter some content to publish!");
+            return;
+        }
+        postToFacebook(postContent);
+    });
+
+    document.getElementById('schedule-btn').addEventListener('click', function() {
+        const postContent = document.getElementById('post-content').value;
+        if (!postContent) {
+            alert("Please enter some content to schedule!");
+            return;
+        }
+        // Save scheduled post to localStorage (for now, we just save the content and date)
+        let scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts')) || [];
+        scheduledPosts.push({ content: postContent, date: new Date() });
+        localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
+        alert("Post scheduled! (Dummy schedule)");
+    });
+
+    // Initial call to display connected accounts
+    displayConnectedAccounts();
 });
-
-document.getElementById('schedule-btn').addEventListener('click', function() {
-    const postContent = document.getElementById('post-content').value;
-    if (!postContent) {
-        alert("Please enter some content to schedule!");
-        return;
-    }
-    // Save scheduled post to localStorage (for now, we just save the content and date)
-    let scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts')) || [];
-    scheduledPosts.push({ content: postContent, date: new Date() });
-    localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
-    alert("Post scheduled! (Dummy schedule)");
-});
-
-// Initial call to display connected accounts
-displayConnectedAccounts();
