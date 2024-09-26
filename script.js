@@ -1,6 +1,4 @@
-    // app id : 399515593191802secrt :: 30ed2411cd9de4298ca77b6422f54b4a
-
-
+    // app id : 399515593191802 secrt :: 30ed2411cd9de4298ca77b6422f54b4a
 
 // Global flag to check if Facebook SDK is ready
 let fbSdkReady = false;
@@ -22,7 +20,7 @@ window.fbAsyncInit = function() {
         appId      : '399515593191802', // Replace with your App ID
         cookie     : true,               // Enable cookies to allow the server to access the session
         xfbml      : true,               // Parse social plugins on this page
-        version    : 'v17.0'             // Use the latest Graph API version
+        version    : 'v16.0'             // Use a valid version like 'v16.0' or 'v15.0'
     });
 
     fbSdkReady = true; // Set the flag to true when SDK is initialized
@@ -148,3 +146,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial call to display connected accounts
     displayConnectedAccounts();
 });
+
